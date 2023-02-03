@@ -30,6 +30,12 @@ const postURLService = async (datas) => {
         company_id.push(enteries.company_id);
         company_sector.push(enteries.company_sector);
     })
+
+    const newCompanySector = global.company_sector.filter((item,index)=>{  
+        return global.company_sector.indexOf(item) == index;  
+     });  
+     global.company_sector=newCompanySector;
+
     const companyDataFromId=await completeCompanyInfo();
     const companyForSector=await completeSectorInfo();
     const dataStore=await storeCompanyDataDb(companyDataFromId);
