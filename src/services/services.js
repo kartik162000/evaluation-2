@@ -20,6 +20,18 @@ const storeCompanyPerformanceDataDb=async(companyForSector)=>{
     return result;
 }
 
+const getBoth = async()=>{
+    const ans=[]
+const bothInfo= await db.CompanyPerformanceBySector.findAll({
+      include:db.Company
+    });
+    bothInfo.forEach((data)=>{
+        ans.push({
+        "c_id":data.c_id,
+        "score":((data.cpi * 10) + (data.cf / 10000) + (data.mau * 10) + data.roic) / 4})}
+    )
+    return ans;
+}
 const postURLService = async (datas) => {
     const {urlLink} = datas;
     const data = await axios.get(urlLink);
@@ -40,14 +52,9 @@ const postURLService = async (datas) => {
     const companyForSector=await completeSectorInfo();
     const dataStore=await storeCompanyDataDb(companyDataFromId);
     const companyPerformanceDataStore=await storeCompanyPerformanceDataDb(companyForSector);
-    if(companyPerformanceDataStore && dataStore)
-    {
-        return {"message":"Data stored successfully"};
-    }
-    else
-    {
-        return {"message":"Data not stored"};
-    }
+    return await getBoth().catch((err)=>{
+        console.log(err);
+    });
 
 };
 

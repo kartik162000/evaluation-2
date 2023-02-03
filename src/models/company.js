@@ -10,11 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-            // this.belongsTo(models.CompanyPerformanceBySector
-            //   , {
-            //     foreignKey: "companyId",
-            //     targetKey: "companyId",
-            //   });
+            this.belongsTo(models.Company, {
+                foreignKey: "c_id",
+                targetKey: "c_id",
+              });
     }
   }
   Company.init({
