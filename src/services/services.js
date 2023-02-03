@@ -34,7 +34,7 @@ const postURLService = async (datas) => {
     const companyForSector=await completeSectorInfo();
     const dataStore=await storeCompanyDataDb(companyDataFromId);
     const companyPerformanceDataStore=await storeCompanyPerformanceDataDb(companyForSector);
-    if(companyPerformanceDataStore)
+    if(companyPerformanceDataStore && dataStore)
     {
         return {"message":"Data stored successfully"};
     }
