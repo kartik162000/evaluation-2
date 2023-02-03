@@ -24,7 +24,8 @@ module.exports = (sequelize, DataTypes) => {
     cpi: DataTypes.INTEGER,
     cf: DataTypes.INTEGER,
     mau: DataTypes.INTEGER,
-    roic: DataTypes.INTEGER
+    roic: DataTypes.INTEGER,
+    score: DataTypes.FLOAT
   }, {
     sequelize,
     modelName: 'CompanyPerformanceBySector',

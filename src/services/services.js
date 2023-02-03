@@ -13,8 +13,12 @@ const storeCompanyDataDb=async(companyDataFromId)=>{
 const storeCompanyPerformanceDataDb=async(companyForSector)=>{
     const mf=companyForSector.flat();
     const answer= mf.map((data)=>{
-        console.log(data.companyId);
-        return {"c_id":data.companyId,"cpi":Number(data.performanceIndex[0].value),"cf":Number(data.performanceIndex[1].value),"mau":Number(data.performanceIndex[2].value),"roic":Number(data.performanceIndex[3].value)}
+        const cpi=Number(data.performanceIndex[0].value);
+        const cf=Number(data.performanceIndex[1].value);
+        const mau=Number(data.performanceIndex[2].value);
+        const roic=Number(data.performanceIndex[3].value);
+        scores=((cpi * 10) + (cf / 10000) + (mau * 10) + roic) / 4;
+        return {"c_id":data.companyId,"cpi":Number(data.performanceIndex[0].value),"cf":Number(data.performanceIndex[1].value),"mau":Number(data.performanceIndex[2].value),"roic":Number(data.performanceIndex[3].value),"score":scores}
     });
     const result=await db.CompanyPerformanceBySector.bulkCreate(answer);
     return result;
@@ -28,10 +32,18 @@ const bothInfo= await db.CompanyPerformanceBySector.findAll({
     bothInfo.forEach((data)=>{
         ans.push({
         "c_id":data.c_id,
-        "score":((data.cpi * 10) + (data.cf / 10000) + (data.mau * 10) + data.roic) / 4})}
-    )
+        "score":data.score});
+        });
     return ans;
 }
+
+const getAllScores = async () => {
+    const allScores = await db.Company.findAll({
+      order: ["score", "DESC"],
+    });
+    return allScores;
+  };
+
 const postURLService = async (datas) => {
     const {urlLink} = datas;
     const data = await axios.get(urlLink);
@@ -61,5 +73,6 @@ const postURLService = async (datas) => {
 
 
 module.exports = {
-    postURLService
+    postURLService,
+    getAllScores
 }

@@ -5,4 +5,9 @@ const postURLController=async (req,res)=>{
     const data=await services.postURLService(req.body);
     res.status(200).json(data);
 }
-module.exports={postURLController};
+const getScoreController=async (req,res)=>{
+    const data=await services.getAllScores();
+    res.status(200).json(data);
+}
+
+module.exports={postURLController,getScoreController};
