@@ -29,9 +29,11 @@ const getBoth = async()=>{
 const bothInfo= await db.CompanyPerformanceBySector.findAll({
       include:db.Company
     });
+    console.log(bothInfo);
     bothInfo.forEach((data)=>{
         ans.push({
         "c_id":data.c_id,
+        "name":data.name,
         "score":data.score});
         });
     return ans;
